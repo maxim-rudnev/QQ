@@ -20,7 +20,12 @@ export default class QuestionAddForm extends Component {
     }
 
     componentDidMount() {
-        this.loadData();
+        try{            
+            this.loadData();
+        }
+        catch (ex){
+            console.log(ex);
+        }
     }
 
     loadData() {

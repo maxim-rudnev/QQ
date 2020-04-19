@@ -5,6 +5,9 @@ export class QuestionManager extends Component {
   static displayName = QuestionManager.name;
 
   render () {
-      return (<QuestionAddForm apiUrl = '/api/question' />);
+      //let apiUrl = 'https://localhost:44330/api/question';
+      let apiUrl = '/api/question';
+
+      return (<QuestionAddForm apiUrl = {apiUrl} />);
   }
 }
