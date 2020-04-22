@@ -1,28 +1,12 @@
 ﻿import React, { Component } from "react";
+import { Table } from 'antd';
 
 
-export default class QuestionAddForm extends Component {
-    static displayName = QuestionAddForm.name;
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            text: '',
-            answer: ''
-        };
+export default class QuestionList extends Component {
+    static displayName = QuestionList.name;
 
 
-        this.handleChange = this.handleChange.bind(this);
-    }
     
-
-    handleChange(e) {
-        let newState = {};
-        newState[e.target.name] = e.target.value;
-
-        this.setState(newState);
-    }
 
     render() {
 
