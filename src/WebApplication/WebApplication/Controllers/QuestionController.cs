@@ -46,6 +46,7 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
             _context.Questions.Remove(question);
+            _context.SaveChanges();
 
             return Ok(question);
         }

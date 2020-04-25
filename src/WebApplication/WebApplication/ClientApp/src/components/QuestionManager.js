@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { notification } from 'antd';
 import QuestionAddForm from './QuestionAddForm.js';
+import QuestionList from './QuestionList.js';
 
 
 
 export class QuestionManager extends Component {
     static displayName = QuestionManager.name;
 
-    
-
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.apiUrl = '/api/question';
         //this.apiUrl = 'https://localhost:44330/api/question';
 
         this.state = { questions: [] };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAddQuestion = this.handleAddQuestion.bind(this);
+        this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this);
         this.loadData = this.loadData.bind(this);
     }
 
@@ -26,14 +26,14 @@ export class QuestionManager extends Component {
             this.loadData();
         }
         catch (ex) {
-            console.log(ex);
+            this.openErrorNotification(ex);
         }
     }
 
-    openErrorNotificationWithIcon(type, title, text)
+    openErrorNotification(text)
     {
-        notification[type]({
-            message: title,
+        notification['error']({
+            message: 'Ошибка',
             description: text,
             placement: 'bottomRight'
         });
@@ -50,20 +50,14 @@ export class QuestionManager extends Component {
                 this.setState({ questions: data });
             }
             catch (ex) {
-                this.openErrorNotificationWithIcon('error','Connection error', '��� ��������� ������ ��������� ������ ' + ex + ' URL:' + methodUrl);
+                this.openErrorNotification( 'При получении данных произошла ошибка ' + ex + ' URL:' + methodUrl);
             }
         }.bind(this);
         xhr.send();
     }
 
-    handleSubmit(e) {
+    handleAddQuestion(question) {
         let methodUrl = this.apiUrl;
-
-        e.preventDefault();
-
-
-
-        let question = this.state;
 
         const data = new FormData();
         data.append("text", question.text);
@@ -76,24 +70,35 @@ export class QuestionManager extends Component {
                 this.loadData();
             }
             else {
-                this.openErrorNotificationWithIcon('error', 'Connection error', '');
+                this.openErrorNotification('Ошибка соединения ' + xhr.status + ' URL:' + methodUrl);
             }
         }.bind(this);
 
         xhr.send(data);
+    }
 
+    handleDeleteQuestion(id) {
+        if (id) {
+            var methodUrl = this.apiUrl + "/" + id;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("delete", methodUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    this.loadData();
+                }
+                else {
+                    this.openErrorNotification('Ошибка соединения ' + xhr.status + ' URL:' + methodUrl);
+                }
+            }.bind(this);
+            xhr.send();
+        }
     }
 
     render () {
 
-        const questions = [];
-        for (let i in this.state.questions) {
-            let q = this.state.questions[i];
-
-            questions.push(<div><span>{q.id}</span><span>{q.text}</span><span>{q.answer}</span></div>);
-        }
-        
-
-        return [<QuestionAddForm handleSubmit={this.handleSubmit} />, questions];
+        return [<QuestionAddForm handleAddQuestion={this.handleAddQuestion}  />,
+                <QuestionList data={this.state.questions} handleDeleteQuestion={this.handleDeleteQuestion} />];
     }
 }
