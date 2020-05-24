@@ -2,6 +2,7 @@ import React, { Component  } from 'react';
 import { Route, Link } from "react-router-dom";
 import { Layout, Menu } from 'antd';
 import { QuestionManager } from './components/QuestionManager.js';
+import { TestManager } from './components/TestManager.js';
 
 
 import {
@@ -22,7 +23,13 @@ const { Header, Content, Footer, Sider } = Layout;
 
 export default class App extends Component {
     static displayName = App.name;
-    
+
+    constructor(props) {
+        super(props);
+
+        this.questionApiUrl = '/api/question';
+        //this.questionApiUrl = 'https://localhost:44330/api/question';
+    }
 
     state = {
         collapsed: false,
@@ -69,7 +76,7 @@ export default class App extends Component {
                         }}
                     >
                         <Route path='/administration' component={QuestionManager} />
-                        <Route path='/testing' component={() => <div>test</div>} />
+                        <Route path='/testing' component={TestManager} />
                     </Content>
                 </Layout>
             </Layout>
