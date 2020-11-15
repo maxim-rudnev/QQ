@@ -25,7 +25,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public IEnumerable<Question> Get()
         {
-            return _context.Questions.ToList();
+            return _context.Questions?.ToList();
         }
 
         [HttpPost]
