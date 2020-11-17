@@ -9,6 +9,7 @@ import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
+
 import './custom.css'
 
 export default class AppOld extends Component {
@@ -17,8 +18,11 @@ export default class AppOld extends Component {
     render() {
         return (
             <Layout>
-                <Route exact path='/' component={QuestionManager} />
-                <Route path='/home' component={Home} />
+                <Route exact path='/' component={Home} />
+                <Route path='/counter' component={Counter} />
+                <Route path='/QuestionManager' component={QuestionManager} />
+                <AuthorizeRoute path='/fetch-data' component={FetchData} />
+                <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
             </Layout>
         );
     }
